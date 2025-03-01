@@ -8,16 +8,11 @@ class Solution:
                 nums[index] *= 2
                 nums[index + 1] = 0
 
-        # Step 2: Shift non-zero elements to the beginning
+        # Step 2: Shift non-zero element in place
         non_zero_index = 0
-        for iterate_index in range(n):
-            if nums[iterate_index] != 0:
-                nums[non_zero_index] = nums[iterate_index]
+        for index in range(n):
+            if nums[index]:
+                nums[index], nums[non_zero_index] = nums[non_zero_index], nums[index]
                 non_zero_index += 1
-
-        # Step 3: Fill the remaining positions with zeros
-        while non_zero_index < n:
-            nums[non_zero_index] = 0
-            non_zero_index += 1
 
         return nums
