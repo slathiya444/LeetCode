@@ -1,23 +1,13 @@
 class Solution:
     def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
-        N = len(nums)
         nums.sort()
-
-        @lru_cache(None)
-        def dp(curr_idx, prev):
-            ## base cases
-            if curr_idx == N:
-                return []
-
-            ## recurance relation
-            # do not include current number and move to next
-            skip_res = dp(curr_idx+1, prev)
-            # include current number
-            if nums[curr_idx]%prev == 0:
-                include_res = [nums[curr_idx]] + dp(curr_idx+1, nums[curr_idx])
-                # skip_res = skip_res if len(skip_res) > len(include_res) else include_res
-                skip_res = include_res if len(include_res) > len(skip_res) else skip_res
-            
-            return skip_res
-
-        return dp(0, 1)
+        dp = [[n] for n in nums]
+        res = []
+        for i in reversed(range(len(nums))):
+            for j in range(i+1, len(nums)):
+                if nums[j] % nums[i] == 0:
+                    tmp = [nums[i]] + dp[j]
+                    dp[i] = tmp if len(tmp) > len(dp[i]) else dp[i]
+            res = dp[i] if len(dp[i]) > len(res) else res
+        
+        return res
